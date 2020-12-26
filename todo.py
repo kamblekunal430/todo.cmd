@@ -1,6 +1,6 @@
-# Importing the sys package for reading the command line input
+# Importing the sys package for reading the command line input and datetime package for date
 import sys
-
+from datetime import date
 
 # help function to show what can the TODO do.
 def help():
@@ -23,6 +23,17 @@ def get_todo():
         f.close()
 
     return todo_list
+
+# Function to write todo in files
+def write_todo(todo_list):
+    try:
+        f = open("todo.txt",'w')
+        for task in todo_list:
+            f.write(task)
+
+    finally:
+        f.close()
+
 
 
 # Function to list all pending todos
@@ -57,19 +68,48 @@ def del_todo(item_num):
     if item_num <= task_count and item_num > 0:
         # deleting the required todo
         todo_list.pop(item_num - 1)
-        print("Deleted todo #{}".format(item_num))
-        # updating the todo.txt file
-        try:
-            f = open("todo.txt",'w')
-            for task in todo_list:
-                f.write(task)
 
-        finally:
-            f.close()
+        # updating the todo.txt file
+        write_todo(todo_list)
+
+        # For successfull deletion
+        return True
 
     else:
         # The item number is not valid
-        print("Error: todo #{} does not exist. Nothing deleted.".format(item_num))
+        return False
+    
+
+# Function to mark todo as done
+
+def done(item_num):
+    # Getting all the pending todos
+    todo_list = get_todo()
+    task_count = len(todo_list)
+
+    # checking if the item number is valid
+    if item_num <= task_count and item_num > 0:
+        # marking the required todo as done
+        done_todo = todo_list.pop(item_num - 1)
+
+        # Adding done todo to done.txt file
+        try:
+            # Opening the file in append mode to add the item
+            f = open("done.txt","a")
+            f.write("x {} {}".format(date.today(),done_todo))
+            
+        finally:
+            f.close()
+
+        # updating the todo.txt file
+        write_todo(todo_list)
+
+        # For successfull done operation
+        return True
+
+    else:
+        # The item number is not valid
+        return False
 
 
 
@@ -92,5 +132,20 @@ if arg_len > 2 and sys.argv[1] == "add":
 
 # Deleting a todo from the list
 if arg_len > 2 and sys.argv[1] == "del":
-    del_todo(int(sys.argv[2]))
+    item_num = int(sys.argv[2])
+    if del_todo(item_num):
+        print("Deleted todo #{}".format(item_num))
+    else:
+        print("Error: todo #{} does not exist. Nothing deleted.".format(item_num))
+
+
+# Marking todo as done
+if arg_len > 2 and sys.argv[1] == "done":
+    item_num = int(sys.argv[2])
+    if del_todo(item_num):
+        print("Marked todo #{} as done".format(item_num))
+    else:
+        print("Error: todo #{} does not exist.".format(item_num))
     
+    
+
