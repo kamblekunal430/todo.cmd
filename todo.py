@@ -142,7 +142,7 @@ if arg_len > 2 and sys.argv[1] == "del":
 # Marking todo as done
 if arg_len > 2 and sys.argv[1] == "done":
     item_num = int(sys.argv[2])
-    if del_todo(item_num):
+    if done(item_num):
         print("Marked todo #{} as done".format(item_num))
     else:
         print("Error: todo #{} does not exist.".format(item_num))
