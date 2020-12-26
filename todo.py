@@ -1,3 +1,4 @@
+# Importing the sys package for reading the command line input
 import sys
 
 
@@ -12,20 +13,29 @@ def help():
     print('$ ./todo report           # Statistics')
 
 
-# Function to list all pending todos
-def ls():
+# Function to get all todos
+def get_todo():
     try:
         # Opening the file in read mode
         f = open("todo.txt",'r')
-        todo_list = f.readlines()
-        task_count = len(todo_list)
-        print(todo_list)
-        for task in todo_list[::-1]:
-            print("[{}] {}".format(task_count,task[:-1]))
-            task_count-=1
-
+        todo_list = f.readlines()    
     finally:
         f.close()
+
+    return todo_list
+
+
+# Function to list all pending todos
+def ls():
+    # Getting the all pending todos
+    todo_list = get_todo()
+    task_count = len(todo_list)
+    
+    # Printing all the pending todos
+    for task in todo_list[::-1]:
+        print("[{}] {}".format(task_count,task[:-1]))
+        task_count-=1
+
 
 # Function to add new todo item
 def add(item):
@@ -36,6 +46,31 @@ def add(item):
         
     finally:
         f.close()
+
+# Function to delete a todo item
+def del_todo(item_num):
+    # Getting all the pending todos
+    todo_list = get_todo()
+    task_count = len(todo_list)
+
+    # checking if the item number is valid
+    if item_num <= task_count and item_num > 0:
+        # deleting the required todo
+        todo_list.pop(item_num - 1)
+        print("Deleted todo #{}".format(item_num))
+        # updating the todo.txt file
+        try:
+            f = open("todo.txt",'w')
+            for task in todo_list:
+                f.write(task)
+
+        finally:
+            f.close()
+
+    else:
+        # The item number is not valid
+        print("Error: todo #{} does not exist. Nothing deleted.".format(item_num))
+
 
 
 # Calculating the lenght of arguments recieved
@@ -54,3 +89,8 @@ if arg_len == 2 and sys.argv[1] == 'ls':
 if arg_len > 2 and sys.argv[1] == "add":
     add(sys.argv[2])
     print('Added todo: "{}"'.format(sys.argv[2]))
+
+# Deleting a todo from the list
+if arg_len > 2 and sys.argv[1] == "del":
+    del_todo(int(sys.argv[2]))
+    
