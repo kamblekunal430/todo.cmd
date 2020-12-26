@@ -14,13 +14,16 @@ def help():
 
 
 # Function to get all todos
-def get_todo():
+def get_todo(file_name):
     try:
         # Opening the file in read mode
-        f = open("todo.txt",'r')
-        todo_list = f.readlines()    
-    finally:
-        f.close()
+        f = open(file_name,'r')
+        try:
+            todo_list = f.readlines()    
+        finally:
+            f.close()
+    except:
+        return []
 
     return todo_list
 
@@ -39,7 +42,7 @@ def write_todo(todo_list):
 # Function to list all pending todos
 def ls():
     # Getting the all pending todos
-    todo_list = get_todo()
+    todo_list = get_todo("todo.txt")
     task_count = len(todo_list)
     
     # Printing all the pending todos
@@ -61,7 +64,7 @@ def add(item):
 # Function to delete a todo item
 def del_todo(item_num):
     # Getting all the pending todos
-    todo_list = get_todo()
+    todo_list = get_todo("todo.txt")
     task_count = len(todo_list)
 
     # checking if the item number is valid
@@ -81,10 +84,9 @@ def del_todo(item_num):
     
 
 # Function to mark todo as done
-
 def done(item_num):
     # Getting all the pending todos
-    todo_list = get_todo()
+    todo_list = get_todo("todo.txt")
     task_count = len(todo_list)
 
     # checking if the item number is valid
@@ -112,6 +114,19 @@ def done(item_num):
         return False
 
 
+# Function to get the statistics of pending and completed task
+def report():
+    # Getting all the pending todos
+    todo_list = get_todo("todo.txt")
+    todo_count = len(todo_list)
+
+    # Getting all the done todos
+    done_list = get_todo("done.txt")
+    done_count = len(done_list)
+
+    print("{} Pending : {} Completed : {}".format(date.today(),todo_count,done_count))
+
+
 
 # Calculating the lenght of arguments recieved
 arg_len = len(sys.argv)
@@ -123,6 +138,10 @@ if (arg_len == 1):
 # Display the list of pending todos
 if arg_len == 2 and sys.argv[1] == 'ls': 
     ls()
+
+# Display the help menu
+if arg_len == 2 and sys.argv[1] == 'help': 
+    help()
 
 
 # Adding new task to the todo list
@@ -143,9 +162,13 @@ if arg_len > 2 and sys.argv[1] == "del":
 if arg_len > 2 and sys.argv[1] == "done":
     item_num = int(sys.argv[2])
     if done(item_num):
-        print("Marked todo #{} as done".format(item_num))
+        print("Marked todo #{} as done.".format(item_num))
     else:
         print("Error: todo #{} does not exist.".format(item_num))
     
+  
+# Displaying the statistics of done and pending todos
+if arg_len == 2 and sys.argv[1] == 'report': 
+    report()
     
 
