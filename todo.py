@@ -4,15 +4,13 @@ from datetime import date
 
 # help function to show what can the TODO do.
 def help():
-    usage =  '''
-    Usage :-
-    $ ./todo add \"todo item\"  # Add a new todo
-    $ ./todo ls               # Show remaining todos
-    $ ./todo del NUMBER       # Delete a todo
-    $ ./todo done NUMBER      # Complete a todo
-    $ ./todo help             # Show usage
-    $ ./todo report           # Statistics'''
-    print(usage)
+    print('''Usage :-
+$ ./todo add \"todo item\"  # Add a new todo
+$ ./todo ls               # Show remaining todos
+$ ./todo del NUMBER       # Delete a todo
+$ ./todo done NUMBER      # Complete a todo
+$ ./todo help             # Show usage
+$ ./todo report           # Statistics''')
 
 
 # Function to get all todos
@@ -138,35 +136,44 @@ if (arg_len == 1):
     help()
 
 # Display the list of pending todos
-if arg_len == 2 and sys.argv[1] == 'ls': 
+elif arg_len == 2 and sys.argv[1] == 'ls': 
     ls()
 
 # Display the help menu
-if arg_len == 2 and sys.argv[1] == 'help': 
+elif arg_len == 2 and sys.argv[1] == 'help': 
     help()
 
 
 # Adding new task to the todo list
-if arg_len > 2 and sys.argv[1] == "add":
-    add(sys.argv[2])
-    print('Added todo: "{}"'.format(sys.argv[2]))
+elif sys.argv[1] == "add":
+    if arg_len > 2:
+        add(sys.argv[2])
+        print('Added todo: "{}"'.format(sys.argv[2]))
+    else:
+        print("Error: Missing todo string. Nothing added!")
 
 # Deleting a todo from the list
-if arg_len > 2 and sys.argv[1] == "del":
-    item_num = int(sys.argv[2])
-    if del_todo(item_num):
-        print("Deleted todo #{}".format(item_num))
+elif sys.argv[1] == "del":
+    if arg_len > 2:
+        item_num = int(sys.argv[2])
+        if del_todo(item_num):
+            print("Deleted todo #{}".format(item_num))
+        else:
+            print("Error: todo #{} does not exist. Nothing deleted.".format(item_num))
     else:
-        print("Error: todo #{} does not exist. Nothing deleted.".format(item_num))
+        print("Error: Missing NUMBER for deleting todo.")
 
 
 # Marking todo as done
-if arg_len > 2 and sys.argv[1] == "done":
-    item_num = int(sys.argv[2])
-    if done(item_num):
-        print("Marked todo #{} as done.".format(item_num))
+elif sys.argv[1] == "done":
+    if arg_len >2:
+        item_num = int(sys.argv[2])
+        if done(item_num):
+            print("Marked todo #{} as done.".format(item_num))
+        else:
+            print("Error: todo #{} does not exist.".format(item_num))
     else:
-        print("Error: todo #{} does not exist.".format(item_num))
+        print("Error: Missing NUMBER for marking todo as done.")
     
   
 # Displaying the statistics of done and pending todos
