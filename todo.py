@@ -4,13 +4,15 @@ from datetime import date
 
 # help function to show what can the TODO do.
 def help():
-    print("Usage :-")
-    print('$ ./todo add "todo item"  # Add a new todo')
-    print('$ ./todo ls               # Show remaining todos')
-    print('$ ./todo del NUMBER       # Delete a todo')
-    print('$ ./todo done NUMBER      # Complete a todo')
-    print('$ ./todo help             # Show usage')
-    print('$ ./todo report           # Statistics')
+    usage =  '''
+    Usage :-
+    $ ./todo add \"todo item\"  # Add a new todo
+    $ ./todo ls               # Show remaining todos
+    $ ./todo del NUMBER       # Delete a todo
+    $ ./todo done NUMBER      # Complete a todo
+    $ ./todo help             # Show usage
+    $ ./todo report           # Statistics'''
+    print(usage)
 
 
 # Function to get all todos
