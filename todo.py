@@ -4,12 +4,15 @@ from datetime import date
 
 # help function to show what can the TODO do.
 def help():
-    print('''Usage :-\n$ ./todo add \"todo item\"  # Add a new todo
+    usage = '''Usage :-
+$ ./todo add \"todo item\"  # Add a new todo
 $ ./todo ls               # Show remaining todos
 $ ./todo del NUMBER       # Delete a todo
 $ ./todo done NUMBER      # Complete a todo
 $ ./todo help             # Show usage
-$ ./todo report           # Statistics''')
+$ ./todo report           # Statistics'''
+    sys.stdout.buffer.write(usage.encode('utf8'))
+
 
 
 # Function to get all todos
@@ -49,7 +52,9 @@ def ls():
     else:
         # Printing all the pending todos
         for task in todo_list[::-1]:
-            print("[{}] {}".format(task_count,task[:-1]))
+            todo = "[{}] {}".format(task_count,task)
+            #print("print",todo)
+            sys.stdout.buffer.write(todo.encode('utf8'))
             task_count-=1
 
 
