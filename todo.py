@@ -4,8 +4,7 @@ from datetime import date
 
 # help function to show what can the TODO do.
 def help():
-    print('''Usage :-
-$ ./todo add \"todo item\"  # Add a new todo
+    print('''Usage :-\n$ ./todo add \"todo item\"  # Add a new todo
 $ ./todo ls               # Show remaining todos
 $ ./todo del NUMBER       # Delete a todo
 $ ./todo done NUMBER      # Complete a todo
@@ -45,10 +44,13 @@ def ls():
     todo_list = get_todo("todo.txt")
     task_count = len(todo_list)
     
-    # Printing all the pending todos
-    for task in todo_list[::-1]:
-        print("[{}] {}".format(task_count,task[:-1]))
-        task_count-=1
+    if todo_list == []:
+        print("There are no pending todos!")
+    else:
+        # Printing all the pending todos
+        for task in todo_list[::-1]:
+            print("[{}] {}".format(task_count,task[:-1]))
+            task_count-=1
 
 
 # Function to add new todo item
